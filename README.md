@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/Balaji91221/repocontract/actions/workflows/ci.yml"><img src="https://github.com/Balaji91221/repocontract/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
+  <a href="https://github.com/Balaji91221/repocontract/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/Node.js-22.18%2B-339933" alt="Node.js 22.18 or newer">
   <img src="https://img.shields.io/badge/TypeScript-SDK-3178c6" alt="TypeScript SDK">
   <img src="https://img.shields.io/badge/MCP-read--only-7c3aed" alt="Read-only MCP server">
@@ -15,7 +15,7 @@
 <p><a href="#why-i-built-it">Why</a> · <a href="#quick-start">Quick start</a> · <a href="#usage">Usage</a> · <a href="#architecture">Architecture</a> · <a href="#documentation">Documentation</a></p>
 </div>
 
-![RepoContract workflow: declare a boundary, inspect imports, and review source-backed violations.](docs/assets/overview.svg)
+![RepoContract workflow: declare a boundary, inspect imports, and review source-backed violations.](https://raw.githubusercontent.com/Balaji91221/repocontract/main/docs/assets/overview.svg)
 
 ## Why I built it
 
@@ -42,16 +42,13 @@ Useful for TypeScript maintainers, teams using coding assistants, and developers
 Requires **Node.js 22.18+**. The basic checks need no LLM or API key.
 
 ```bash
-git clone https://github.com/Balaji91221/repocontract.git
-cd repocontract
-npm ci
-npm run build
-npm run demo
+npm install --save-dev repocontract
+npx repocontract demo
 ```
 
 The demo deliberately contains a forbidden route-to-database import. It reports `complete: true`, a violation with rule ID `routes-no-db`, and exits with **code 1**. This means the rule caught the example problem.
 
-![Actual RepoContract graph report showing the forbidden import in the included fixture.](docs/assets/demo.png)
+![Actual RepoContract graph report showing the forbidden import in the included fixture.](https://raw.githubusercontent.com/Balaji91221/repocontract/main/docs/assets/demo.png)
 
 *Actual report generated from the included example repository. Findings link a declared rule to source evidence.*
 
@@ -73,10 +70,10 @@ Save this as `rules.json` in your project:
 }
 ```
 
-From the RepoContract checkout:
+From your project directory:
 
 ```bash
-node dist/cli.js check /absolute/path/to/your-project /absolute/path/to/your-project/rules.json
+npx repocontract check . rules.json
 ```
 
 Scopes are exact relative paths or directory prefixes, not globs. Install your target project's dependencies first when imports require external resolution.
@@ -89,17 +86,13 @@ Scopes are exact relative paths or directory prefixes, not globs. Install your t
 
 ### Use the SDK
 
-Version **0.2.0 is not published to npm**. Package the checkout and install the tarball in your application:
-
 ```bash
-npm pack
-# In your own application:
-npm install /absolute/path/to/repocontract/ai-opensource-local-repocontract-0.2.0.tgz
+npm install repocontract
 ```
 
 ```ts
 import { readFileSync } from 'node:fs';
-import { checkRepository } from '@ai-opensource-local/repocontract';
+import { checkRepository } from 'repocontract';
 
 const rules = JSON.parse(readFileSync('./rules.json', 'utf8'));
 const result = checkRepository('/absolute/path/to/your-project', rules);
@@ -114,9 +107,9 @@ Add a server entry in an MCP client that accepts `mcpServers` configuration, rep
 {
   "mcpServers": {
     "repocontract": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/absolute/path/to/repocontract/dist/cli.js", "serve",
+        "-y", "repocontract@0.2.0", "serve",
         "/absolute/path/to/your-project",
         "/absolute/path/to/your-project/rules.json"
       ]
@@ -149,13 +142,13 @@ flowchart LR
 
 | Component | Responsibility |
 |---|---|
-| [`checkRepository`](src/index.ts) | Resolve static imports, evaluate boundaries, and report incomplete analysis |
-| [`onboarding`](src/onboarding.ts) | Draft rules from a document; validate evidence and approval |
-| [`checkPatch`](src/patch.ts) | Apply a proposed patch to a disposable Git snapshot and scan it |
-| [`MCP server`](src/mcp.ts) | Expose root-bound, read-only checks to assistants |
-| [`report renderer`](src/report.ts) | Display dependency edges, violations, and analysis errors |
+| [`checkRepository`](https://github.com/Balaji91221/repocontract/blob/main/src/index.ts) | Resolve static imports, evaluate boundaries, and report incomplete analysis |
+| [`onboarding`](https://github.com/Balaji91221/repocontract/blob/main/src/onboarding.ts) | Draft rules from a document; validate evidence and approval |
+| [`checkPatch`](https://github.com/Balaji91221/repocontract/blob/main/src/patch.ts) | Apply a proposed patch to a disposable Git snapshot and scan it |
+| [`MCP server`](https://github.com/Balaji91221/repocontract/blob/main/src/mcp.ts) | Expose root-bound, read-only checks to assistants |
+| [`report renderer`](https://github.com/Balaji91221/repocontract/blob/main/src/report.ts) | Display dependency edges, violations, and analysis errors |
 
-An optional LLM can **propose** rules. Approved rules and the deterministic analyzer decide the findings. The [architecture guide](docs/architecture.md) explains the HLD, LLD, and approval flow.
+An optional LLM can **propose** rules. Approved rules and the deterministic analyzer decide the findings. The [architecture guide](https://github.com/Balaji91221/repocontract/blob/main/docs/architecture.md) explains the HLD, LLD, and approval flow.
 
 ## Current scope
 
@@ -168,17 +161,20 @@ An optional LLM can **propose** rules. Approved rules and the deterministic anal
 
 | Start here | Go deeper |
 |---|---|
-| [Usage, reports, and rule onboarding](docs/usage.md) | [Architecture: HLD and LLD](docs/architecture.md) |
-| [Implemented features](FEATURE_MATRIX.md) | [Project plan](PROJECT_PLAN.md) |
-| [Verification and release scope](IMPLEMENTATION_STATUS.md) | [Security policy](SECURITY.md) |
+| [Usage, reports, and rule onboarding](https://github.com/Balaji91221/repocontract/blob/main/docs/usage.md) | [Architecture: HLD and LLD](https://github.com/Balaji91221/repocontract/blob/main/docs/architecture.md) |
+| [Implemented features](https://github.com/Balaji91221/repocontract/blob/main/FEATURE_MATRIX.md) | [Project plan](https://github.com/Balaji91221/repocontract/blob/main/PROJECT_PLAN.md) |
+| [Verification and release scope](https://github.com/Balaji91221/repocontract/blob/main/IMPLEMENTATION_STATUS.md) | [Security policy](https://github.com/Balaji91221/repocontract/blob/main/SECURITY.md) |
 
 ## Development
 
 ```bash
+git clone https://github.com/Balaji91221/repocontract.git
+cd repocontract
+npm ci
 npm run typecheck
 npm run build
 npm test
 npm run eval
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), or open a [GitHub issue](https://github.com/Balaji91221/repocontract/issues) with a small reproduction. Released under the [MIT License](LICENSE).
+See [CONTRIBUTING.md](https://github.com/Balaji91221/repocontract/blob/main/CONTRIBUTING.md), or open a [GitHub issue](https://github.com/Balaji91221/repocontract/issues) with a small reproduction. Released under the [MIT License](https://github.com/Balaji91221/repocontract/blob/main/LICENSE).

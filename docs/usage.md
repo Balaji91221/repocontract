@@ -4,7 +4,7 @@
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Executable dependency boundaries for TypeScript repositories. Local development release 0.2.0; not published to npm.
+Executable dependency boundaries for TypeScript repositories. Version 0.2.0. Install with `npm install repocontract`.
 
 ## Quick start and usage
 
@@ -40,14 +40,23 @@ Scopes are exact relative paths or directory prefixes, **not globs**. Use `.` fo
 ### SDK
 
 ```ts
-import { checkRepository } from '@ai-opensource-local/repocontract';
+import { checkRepository } from 'repocontract';
 const result = checkRepository('/absolute/path/to/repo', config);
 console.log(result.complete, result.violations, result.errors);
 ```
 
 Rules, dependency edges, and errors are returned as structured data. Each violation includes its rule ID, rationale, import specifier, source path, and line. The tool reads source but does not execute repository scripts. Install the target repository's dependencies separately if it requires external resolution.
 
-## Local installation in another project
+## Install from npm
+
+```bash
+npm install repocontract
+npx repocontract demo
+```
+
+The deliberate failing demo exits with code 1.
+
+## Build a local tarball
 
 Build and package this source folder, then install the resulting tarball in your consuming project:
 
@@ -58,7 +67,7 @@ npm pack
 npm install /absolute/path/to/generated-package.tgz
 ```
 
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. The package is marked private to prevent accidental publication. Original code is MIT licensed. Selecting an available public name and publishing remain explicit release tasks; dependencies retain their own licenses.
+The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name is `repocontract`.
 
 ## Design and current scope
 

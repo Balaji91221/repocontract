@@ -1,7 +1,6 @@
 {
-  "name": "@ai-opensource-local/repocontract",
+  "name": "repocontract",
   "version": "0.2.0",
-  "private": true,
   "description": "Executable TypeScript dependency boundaries",
   "type": "module",
   "engines": {
@@ -47,5 +46,25 @@
     "schemas"
   ],
   "types": "./dist/index.d.ts",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Balaji91221/repocontract.git"
+  },
+  "homepage": "https://github.com/Balaji91221/repocontract#readme",
+  "bugs": {
+    "url": "https://github.com/Balaji91221/repocontract/issues"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "architecture",
+    "typescript",
+    "mcp",
+    "static-analysis"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
