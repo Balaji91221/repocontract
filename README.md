@@ -162,7 +162,7 @@ An optional LLM can **propose** rules. Approved rules and the deterministic anal
 | Start here | Go deeper |
 |---|---|
 | [Usage, reports, and rule onboarding](https://github.com/Balaji91221/repocontract/blob/main/docs/usage.md) | [Architecture: HLD and LLD](https://github.com/Balaji91221/repocontract/blob/main/docs/architecture.md) |
-| [Implemented features](https://github.com/Balaji91221/repocontract/blob/main/FEATURE_MATRIX.md) | [Project plan](https://github.com/Balaji91221/repocontract/blob/main/PROJECT_PLAN.md) |
+| [Implemented features](https://github.com/Balaji91221/repocontract/blob/main/FEATURE_MATRIX.md) | [Contributing](https://github.com/Balaji91221/repocontract/blob/main/CONTRIBUTING.md) |
 | [Verification and release scope](https://github.com/Balaji91221/repocontract/blob/main/IMPLEMENTATION_STATUS.md) | [Security policy](https://github.com/Balaji91221/repocontract/blob/main/SECURITY.md) |
 
 ## Development

@@ -1,8 +1,8 @@
 # RepoContract implementation status
 
-Version 0.2.1. See [feature matrix](FEATURE_MATRIX.md) for every in-scope plan phase and its tests.
+Version 0.2.1. See [feature matrix](FEATURE_MATRIX.md) for implemented features and their tests.
 
-All local in-scope roadmap phases are implemented. Optional caching/baseline suppression are not required by the first-release plan. Runtime architecture proof, universal rule inference, autonomous repair, hosting, live model benchmarking and independent pilots are not claimed.
+The documented features are implemented. Optional caching and baseline suppression are outside the release scope. Runtime architecture proof, universal rule inference, autonomous repair, hosting, live model benchmarking and independent pilots are not claimed.
 
 ## Verification
 

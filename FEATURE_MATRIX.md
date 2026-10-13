@@ -1,6 +1,6 @@
 # RepoContract feature completion matrix
 
-| Plan feature | Implementation | Evidence |
+| Feature | Implementation | Evidence |
 |---|---|---|
 | Dependency analysis | Static JS/TS imports, aliases, modern extensions and uncertainty | `test/core.test.mjs` |
 | Architecture contracts | Forbidden prefixes, internal boundaries, cycles, source rationale | `test/core.test.mjs` |
@@ -11,6 +11,6 @@
 
 ## Release boundary
 
-All local in-scope roadmap phases are implemented. Optional caching/baseline suppression are not required by the first-release plan. Runtime architecture proof, universal rule inference, autonomous repair, hosting, public publication, live model benchmarking and independent pilots are not claimed.
+The documented features are implemented. Optional caching and baseline suppression are outside the release scope. Runtime architecture proof, universal rule inference, autonomous repair, hosting, live model benchmarking and independent pilots are not claimed.
 
 CI definitions, contribution/security guidance, and package-build instructions are included. A checked-in workflow is not evidence of a remote CI run.
