@@ -1,0 +1,84 @@
+[
+  {
+    "id": "plain",
+    "document": "src/routes must not import src/db",
+    "edges": [
+      [
+        "src/routes",
+        "src/db"
+      ]
+    ],
+    "unhandled": 0
+  },
+  {
+    "id": "backticks",
+    "document": "# Architecture\n`src/ui` cannot depend on `src/server`",
+    "edges": [
+      [
+        "src/ui",
+        "src/server"
+      ]
+    ],
+    "unhandled": 0
+  },
+  {
+    "id": "must-never",
+    "document": "packages/domain must never depend on packages/infra",
+    "edges": [
+      [
+        "packages/domain",
+        "packages/infra"
+      ]
+    ],
+    "unhandled": 0
+  },
+  {
+    "id": "multiple",
+    "document": "src/a must not import src/b\nsrc/b cannot import src/c",
+    "edges": [
+      [
+        "src/a",
+        "src/b"
+      ],
+      [
+        "src/b",
+        "src/c"
+      ]
+    ],
+    "unhandled": 0
+  },
+  {
+    "id": "ambiguous",
+    "document": "Keep the system clean and modular",
+    "edges": [],
+    "unhandled": 1
+  },
+  {
+    "id": "authentication",
+    "document": "Every endpoint requires authentication",
+    "edges": [],
+    "unhandled": 1
+  },
+  {
+    "id": "punctuation",
+    "document": "src/api must not import src/store.",
+    "edges": [
+      [
+        "src/api",
+        "src/store"
+      ]
+    ],
+    "unhandled": 0
+  },
+  {
+    "id": "mixed",
+    "document": "src/api must not import src/store\nPrefer fast responses",
+    "edges": [
+      [
+        "src/api",
+        "src/store"
+      ]
+    ],
+    "unhandled": 1
+  }
+]

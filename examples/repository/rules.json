@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "id": "routes-no-db",
+      "from": "src/routes",
+      "forbid": [
+        "src/database"
+      ],
+      "reason": "Routes must use application services",
+      "reference": "docs/architecture.md"
+    }
+  ],
+  "cycles": true
+}
