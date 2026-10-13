@@ -1,22 +1,65 @@
-# RepoContract
+<div align="center">
 
-Executable dependency boundaries for TypeScript repositories. Local development release 0.2.0; not published to npm.
+<h1>RepoContract</h1>
+<p><strong>Turn architecture rules into checks your coding agent can use.</strong></p>
+<p>Find forbidden imports and dependency cycles in TypeScript repositories, with the source lines that explain each finding.</p>
 
-## Quick start and usage
+<p>
+  <a href="https://github.com/Balaji91221/repocontract/actions/workflows/ci.yml"><img src="https://github.com/Balaji91221/repocontract/actions/workflows/ci.yml/badge.svg" alt="GitHub Actions CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/Node.js-22.18%2B-339933" alt="Node.js 22.18 or newer">
+  <img src="https://img.shields.io/badge/TypeScript-SDK-3178c6" alt="TypeScript SDK">
+  <img src="https://img.shields.io/badge/MCP-read--only-7c3aed" alt="Read-only MCP server">
+</p>
+
+<p><a href="#why-i-built-it">Why</a> · <a href="#quick-start">Quick start</a> · <a href="#usage">Usage</a> · <a href="#architecture">Architecture</a> · <a href="#documentation">Documentation</a></p>
+</div>
+
+![RepoContract workflow: declare a boundary, inspect imports, and review source-backed violations.](docs/assets/overview.svg)
+
+## Why I built it
+
+As an AI engineer, I want coding assistants to respect the structure of a project as well as produce working code. A change can pass its tests while quietly bypassing the service layer or introducing a dependency cycle. Architecture notes are useful, but a reviewer still needs a way to check them.
+
+I built RepoContract to make a small set of those rules executable. It connects a declared dependency boundary to the imports in the repository, so a developer or coding agent can see exactly where a change crosses that boundary.
+
+**Example:** your rule says API routes must use application services. A new route imports the database directly. RepoContract reports the rule, file, import, and source line—even if the application still runs.
+
+## What it helps you do
+
+| Need | RepoContract provides |
+|---|---|
+| Preserve module boundaries | Explicit rules for forbidden imports between path prefixes |
+| Inspect dependencies | TypeScript-based resolution, dependency edges, and cycle checks |
+| Review an agent's patch | Checks in a disposable Git snapshot |
+| Give assistants architectural context | Read-only MCP tools for rules and repository checks |
+| Start from an architecture document | Reviewable rule proposals, with source evidence and explicit approval |
+
+Useful for TypeScript maintainers, teams using coding assistants, and developers turning design decisions into CI checks.
+
+## Quick start
+
+Requires **Node.js 22.18+**. The basic checks need no LLM or API key.
 
 ```bash
 git clone https://github.com/Balaji91221/repocontract.git
 cd repocontract
 npm ci
 npm run build
-npm test
-npm run demo  # exits 1: deliberately forbidden route-to-database import
-node dist/cli.js check /absolute/path/to/project /absolute/path/to/rules.json
+npm run demo
 ```
 
-Exit codes: 0 complete scan without violations; 1 complete scan with violations; 2 invalid input, analysis errors, or incomplete resolution. A parse failure or unresolved dependency does not silently pass.
+The demo deliberately contains a forbidden route-to-database import. It reports `complete: true`, a violation with rule ID `routes-no-db`, and exits with **code 1**. This means the rule caught the example problem.
 
-### Configuration
+![Actual RepoContract graph report showing the forbidden import in the included fixture.](docs/assets/demo.png)
+
+*Actual report generated from the included example repository. Findings link a declared rule to source evidence.*
+
+## Usage
+
+### Declare a boundary and check your repository
+
+Save this as `rules.json` in your project:
 
 ```json
 {
@@ -24,88 +67,118 @@ Exit codes: 0 complete scan without violations; 1 complete scan with violations;
     "id": "routes-no-db",
     "from": "src/routes",
     "forbid": ["src/database"],
-    "reason": "Routes must use application services",
-    "reference": "docs/architecture.md"
+    "reason": "Routes must use application services"
   }],
   "cycles": true
 }
 ```
 
-Scopes are exact relative paths or directory prefixes, **not globs**. Use `.` for the whole repository; `./` components are rejected to prevent ambiguous matching. `src/routes` matches files below that directory; wildcards are rejected. The analyzer reads root `tsconfig.json` options, follows supported static imports/re-exports, import-equals, and literal require/import calls. It skips node_modules, .git, dist, and artifacts. Symlinks, unsupported computed module paths, and unresolved dependencies are reported as incomplete. External resolved packages are not local boundary edges. Type-only imports are included.
+From the RepoContract checkout:
 
-### SDK
+```bash
+node dist/cli.js check /absolute/path/to/your-project /absolute/path/to/your-project/rules.json
+```
+
+Scopes are exact relative paths or directory prefixes, not globs. Install your target project's dependencies first when imports require external resolution.
+
+| Exit code | Meaning |
+|---|---|
+| `0` | Analysis completed without violations |
+| `1` | Analysis completed and found violations |
+| `2` | Invalid input, an analysis error, or incomplete resolution |
+
+### Use the SDK
+
+Version **0.2.0 is not published to npm**. Package the checkout and install the tarball in your application:
+
+```bash
+npm pack
+# In your own application:
+npm install /absolute/path/to/repocontract/ai-opensource-local-repocontract-0.2.0.tgz
+```
 
 ```ts
+import { readFileSync } from 'node:fs';
 import { checkRepository } from '@ai-opensource-local/repocontract';
-const result = checkRepository('/absolute/path/to/repo', config);
+
+const rules = JSON.parse(readFileSync('./rules.json', 'utf8'));
+const result = checkRepository('/absolute/path/to/your-project', rules);
 console.log(result.complete, result.violations, result.errors);
 ```
 
-Rules, dependency edges, and errors are returned as structured data. Each violation includes its rule ID, rationale, import specifier, source path, and line. The tool reads source but does not execute repository scripts. Install the target repository's dependencies separately if it requires external resolution.
+### Connect an MCP client
 
-## Local installation in another project
+Add a server entry in an MCP client that accepts `mcpServers` configuration, replacing the paths with your own:
 
-Build and package this source folder, then install the resulting tarball in your consuming project:
+```json
+{
+  "mcpServers": {
+    "repocontract": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/repocontract/dist/cli.js", "serve",
+        "/absolute/path/to/your-project",
+        "/absolute/path/to/your-project/rules.json"
+      ]
+    }
+  }
+}
+```
+
+The server exposes two read-only tools:
+
+```text
+get_rules({"file_path": "src/routes/orders.ts"})
+check_repository({})
+```
+
+It is bound to the configured root and rules. Restart it after changing the approved rules. Rule drafting and approval use the CLI or SDK.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    R[Repository files] --> T[TypeScript parser and resolver]
+    T --> G[Dependency edges and errors]
+    C[Approved rules] --> V[Boundary and cycle checks]
+    G --> V
+    V --> O[Source-backed findings]
+    O --> A[CLI / SDK / MCP]
+    O --> H[HTML graph report]
+```
+
+| Component | Responsibility |
+|---|---|
+| [`checkRepository`](src/index.ts) | Resolve static imports, evaluate boundaries, and report incomplete analysis |
+| [`onboarding`](src/onboarding.ts) | Draft rules from a document; validate evidence and approval |
+| [`checkPatch`](src/patch.ts) | Apply a proposed patch to a disposable Git snapshot and scan it |
+| [`MCP server`](src/mcp.ts) | Expose root-bound, read-only checks to assistants |
+| [`report renderer`](src/report.ts) | Display dependency edges, violations, and analysis errors |
+
+An optional LLM can **propose** rules. Approved rules and the deterministic analyzer decide the findings. The [architecture guide](docs/architecture.md) explains the HLD, LLD, and approval flow.
+
+## Current scope
+
+- Static dependency analysis for supported JavaScript/TypeScript imports; it does not prove runtime architecture.
+- Dynamic module paths, unresolved dependencies, and symlinks produce incomplete analysis rather than a clean pass.
+- Patch checks do not modify your working tree or automatically install dependencies.
+- Model-assisted proposals require explicit configuration and review. Basic checks work offline.
+
+## Documentation
+
+| Start here | Go deeper |
+|---|---|
+| [Usage, reports, and rule onboarding](docs/usage.md) | [Architecture: HLD and LLD](docs/architecture.md) |
+| [Implemented features](FEATURE_MATRIX.md) | [Project plan](PROJECT_PLAN.md) |
+| [Verification and release scope](IMPLEMENTATION_STATUS.md) | [Security policy](SECURITY.md) |
+
+## Development
 
 ```bash
+npm run typecheck
 npm run build
-npm pack
-# In the consuming project:
-npm install /absolute/path/to/generated-package.tgz
-```
-
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. The package is marked private to prevent accidental publication. Original code is MIT licensed. Selecting an available public name and publishing remain explicit release tasks; dependencies retain their own licenses.
-
-## Design and current scope
-
-See [FEATURE_MATRIX.md](FEATURE_MATRIX.md) for the implemented plan phases and [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for verification boundaries.
-
-## MCP connection
-
-```bash
-node /absolute/path/to/06-repocontract/dist/cli.js serve /absolute/path/to/repository /absolute/path/to/rules.json
-```
-
-Register this command and arguments in a compatible assistant's MCP server settings. The server exposes `get_rules({file_path})` and `check_repository({})`. Root and configuration are fixed at startup; tool arguments cannot change them. Configuration edits require a server restart. Protocol initialization is handled by the MCP SDK. The included integration test uses a real SDK client to list/call tools and reject paths outside the root. No assistant UI has been configured automatically.
-
-## Assisted rule onboarding
-
-Use an architecture document from the repository you want to check. In these
-commands, `docs/architecture.md` is a caller-supplied path, not a bundled file.
-
-```bash
-node dist/cli.js init rules.json
-node dist/cli.js propose docs/architecture.md draft.json
-# Inspect draft.json and its documentHash before approval.
-node dist/cli.js approve draft.json docs/architecture.md EXPECTED_DOCUMENT_HASH approved-rules.json
-```
-
-`init`, `propose`, `approve`, and `report` create new files exclusively. The offline template provider recognizes explicit lines such as `src/routes must not import src/database`; ambiguous prose remains in `unhandled`. Proposals carry exact source lines, document hashes, and `reviewed: false`. Approval validates the current document hash and evidence before producing executable configuration. It never rewrites architecture documents.
-
-Optional model integration:
-
-```bash
-# Set ANTHROPIC_API_KEY first; provide an available model ID explicitly.
-node dist/cli.js propose-native docs/architecture.md draft.json MODEL_ID
-```
-
-The native adapter uses [Claude structured tool use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls) to produce drafts. A generic JSON bridge can instead be supplied as the third argument to `propose`; its endpoint contract is documented by `JsonProposalProvider`. External calls are opt-in and send the document to the configured endpoint. Model proposals go through the same schema and exact-evidence validation, and still require approval. Local tests use controlled providers; no live model accuracy claim is made.
-
-```bash
+npm test
 npm run eval
 ```
 
-The committed held-out template cases include explicit, mixed, and unenforceable architecture statements. Evaluation compares proposed boundaries and unhandled statements; it is separate from model-provider contract tests.
-
-## Proposed patches and graph reports
-
-```bash
-node dist/cli.js check-patch /path/to/repo HEAD change.diff rules.json > patch-result.json
-node dist/cli.js report patch-result.json graph-report.html
-```
-
-Patch checks materialize the selected Git commit in a disposable directory and apply the supplied ordinary text patch there. They do not modify the user's checkout or include unrelated uncommitted changes. Symlinks/submodules are rejected; unresolved dependencies produce incomplete analysis. Dependencies are not automatically installed inside snapshots. The self-contained graph report supports filtering paths/rule IDs and displays source evidence and incomplete-analysis errors.
-
-Use `checkPatch`, `proposeRules`, `approveProposal`, and `renderReport` directly from the SDK when integrating these workflows with a coding agent. MCP remains read-only with `get_rules` and `check_repository`; changing approved rules is an explicit CLI/SDK operation.
-
-Configuration shape: [JSON Schema](schemas/rules.schema.json). Runtime validation additionally enforces cross-field deadlines, duplicate IDs and supported operations. Generated `dist/index.d.ts` exposes the current SDK.
+See [CONTRIBUTING.md](CONTRIBUTING.md), or open a [GitHub issue](https://github.com/Balaji91221/repocontract/issues) with a small reproduction. Released under the [MIT License](LICENSE).
