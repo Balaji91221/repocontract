@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 — 2026-10-13
+
+Packaging and documentation release for the public `@kelavathbalajinaik/repocontract` npm package.
+Updated npm installation instructions, package and lockfile versions, and
+release guidance. MCP configuration pins `@kelavathbalajinaik/repocontract@0.2.1`. The package continues to ship
+compiled JavaScript and TypeScript declarations. No runtime behavior or
+dependency versions changed; existing v0.2.0 GitHub tags and assets are preserved.
+
 ## 0.2.0 — 2026-10-13 (local)
 
 Completed the local roadmap implementation, source-backed reports, bounded

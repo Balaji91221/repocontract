@@ -1,6 +1,6 @@
 {
-  "name": "repocontract",
-  "version": "0.2.0",
+  "name": "@kelavathbalajinaik/repocontract",
+  "version": "0.2.1",
   "description": "Executable TypeScript dependency boundaries",
   "type": "module",
   "engines": {

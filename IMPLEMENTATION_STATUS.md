@@ -1,6 +1,6 @@
 # RepoContract implementation status
 
-Version 0.2.0. See [feature matrix](FEATURE_MATRIX.md) for every in-scope plan phase and its tests.
+Version 0.2.1. See [feature matrix](FEATURE_MATRIX.md) for every in-scope plan phase and its tests.
 
 All local in-scope roadmap phases are implemented. Optional caching/baseline suppression are not required by the first-release plan. Runtime architecture proof, universal rule inference, autonomous repair, hosting, live model benchmarking and independent pilots are not claimed.
 
@@ -21,8 +21,8 @@ The held-out template evaluation, examples, and clean local package installation
 were verified separately. Run `npm pack`, install the tarball in an empty project,
 and import the SDK to repeat the package check. Provider adapters use controlled
 endpoints in tests; no external account was configured and no live-model quality
-claim is made. Check the [npm registry entry](https://www.npmjs.com/package/repocontract) for available versions.
+claim is made. Check the [npm registry entry](https://www.npmjs.com/package/@kelavathbalajinaik/repocontract) for available versions.
 
 ## Public distribution
 
-The compiled `repocontract@0.2.0` package is distributed as a [GitHub release tarball](https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz). npm registry publication is pending. Installing the public tarball with npm provides the same SDK and CLI.
+Install the compiled npm package with `npm install @kelavathbalajinaik/repocontract@0.2.1`. It includes the SDK, CLI, and TypeScript declarations. Version 0.2.1 updates packaging and install documentation; runtime behavior is unchanged from 0.2.0. The existing [v0.2.0 GitHub release](https://github.com/Balaji91221/repocontract/releases/tag/v0.2.0) remains available.

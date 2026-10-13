@@ -2,7 +2,7 @@
 
 [← README](../README.md) · [Usage guide](usage.md)
 
-RepoContract checks declared dependency boundaries against source code. This guide describes the implemented 0.2.0 design, including the optional proposal flow.
+RepoContract checks declared dependency boundaries against source code. This guide describes the implemented 0.2.1 design, including the optional proposal flow.
 
 ## High-level design
 

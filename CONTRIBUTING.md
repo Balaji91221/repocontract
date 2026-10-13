@@ -12,7 +12,6 @@ runtime artifacts and secrets outside source control. Use small, reviewable chan
 
 Run `npm pack` and install the tarball into an empty directory before release;
 import the SDK and execute the installed CLI, without a workspace TypeScript loader or source imports. Retain the previous tarball and schema-versioned run data
-for rollback. The npm package has `private: true` to prevent accidental registry
-publication. This is separate from public GitHub source availability: the source
-can be public while the package remains unpublished to npm. Registry publication
-requires selecting an available package name and explicitly choosing to publish.
+for rollback. The public npm package is `@kelavathbalajinaik/repocontract`. Publish only the exact tarball
+that passed the clean-install check, after an explicit release authorization.
+Keep previous GitHub release tags and assets unchanged.
