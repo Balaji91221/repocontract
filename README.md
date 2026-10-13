@@ -178,3 +178,7 @@ npm run eval
 ```
 
 See [CONTRIBUTING.md](https://github.com/Balaji91221/repocontract/blob/main/CONTRIBUTING.md), or open a [GitHub issue](https://github.com/Balaji91221/repocontract/issues) with a small reproduction. Released under the [MIT License](https://github.com/Balaji91221/repocontract/blob/main/LICENSE).
+
+---
+
+Explore more of my work: [latest open-source tools](https://github.com/Balaji91221#latest-open-source-tools) · [recent projects](https://github.com/Balaji91221#recent-work).
