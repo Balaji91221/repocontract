@@ -1,10 +1,13 @@
 # RepoContract usage guide
 
+**Package availability:** use the GitHub release tarball URL below. npm registry publication is pending; package imports and installed CLI names stay `repocontract`.
+
+
 [← README](../README.md) · [Architecture](architecture.md)
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Executable dependency boundaries for TypeScript repositories. Version 0.2.0. Install with `npm install repocontract`.
+Executable dependency boundaries for TypeScript repositories. Version 0.2.0. Install with `npm install https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz`.
 
 ## Quick start and usage
 
@@ -47,10 +50,10 @@ console.log(result.complete, result.violations, result.errors);
 
 Rules, dependency edges, and errors are returned as structured data. Each violation includes its rule ID, rationale, import specifier, source path, and line. The tool reads source but does not execute repository scripts. Install the target repository's dependencies separately if it requires external resolution.
 
-## Install from npm
+## Install the release package
 
 ```bash
-npm install repocontract
+npm install https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz
 npx repocontract demo
 ```
 

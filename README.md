@@ -39,10 +39,13 @@ Useful for TypeScript maintainers, teams using coding assistants, and developers
 
 ## Quick start
 
+**Install from the GitHub release below.** The compiled package is ready to use; npm registry publication is pending.
+
+
 Requires **Node.js 22.18+**. The basic checks need no LLM or API key.
 
 ```bash
-npm install --save-dev repocontract
+npm install https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz
 npx repocontract demo
 ```
 
@@ -87,7 +90,7 @@ Scopes are exact relative paths or directory prefixes, not globs. Install your t
 ### Use the SDK
 
 ```bash
-npm install repocontract
+npm install https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz
 ```
 
 ```ts
@@ -109,7 +112,7 @@ Add a server entry in an MCP client that accepts `mcpServers` configuration, rep
     "repocontract": {
       "command": "npx",
       "args": [
-        "-y", "repocontract@0.2.0", "serve",
+        "-y", "--package", "https://github.com/Balaji91221/repocontract/releases/download/v0.2.0/repocontract-0.2.0.tgz", "repocontract", "serve",
         "/absolute/path/to/your-project",
         "/absolute/path/to/your-project/rules.json"
       ]
