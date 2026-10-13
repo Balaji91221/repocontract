@@ -24,4 +24,4 @@ jobs:
           cd "$(mktemp -d)"
           npm init -y
           npm install "$artifact"
-          node --input-type=module -e "await import('@kelavathbalajinaik/repocontract')"
+          node --input-type=module -e "await import('repocontract-cli')"

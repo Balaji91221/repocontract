@@ -12,6 +12,6 @@ runtime artifacts and secrets outside source control. Use small, reviewable chan
 
 Run `npm pack` and install the tarball into an empty directory before release;
 import the SDK and execute the installed CLI, without a workspace TypeScript loader or source imports. Retain the previous tarball and schema-versioned run data
-for rollback. The public npm package is `@kelavathbalajinaik/repocontract`. Publish only the exact tarball
+for rollback. The public npm package is `repocontract-cli`. Publish only the exact tarball
 that passed the clean-install check, after an explicit release authorization.
 Keep previous GitHub release tags and assets unchanged.

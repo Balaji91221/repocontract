@@ -39,11 +39,11 @@ Useful for TypeScript maintainers, teams using coding assistants, and developers
 
 ## Quick start
 
-Requires **Node.js 22.18+**. The basic checks need no LLM or API key. The npm package and SDK import are `@kelavathbalajinaik/repocontract`; the executable remains `repocontract`.
+Requires **Node.js 22.18+**. The basic checks need no LLM or API key. The npm package and SDK import are `repocontract-cli`; the executable remains `repocontract`.
 
 ```bash
-npm install @kelavathbalajinaik/repocontract@0.2.1
-npx repocontract demo
+npm install repocontract-cli@0.2.1
+npx --package repocontract-cli@0.2.1 repocontract demo
 ```
 
 The demo deliberately contains a forbidden route-to-database import. It reports `complete: true`, a violation with rule ID `routes-no-db`, and exits with **code 1**. This means the rule caught the example problem.
@@ -73,7 +73,7 @@ Save this as `rules.json` in your project:
 From your project directory:
 
 ```bash
-npx repocontract check . rules.json
+npx --package repocontract-cli@0.2.1 repocontract check . rules.json
 ```
 
 Scopes are exact relative paths or directory prefixes, not globs. Install your target project's dependencies first when imports require external resolution.
@@ -87,12 +87,12 @@ Scopes are exact relative paths or directory prefixes, not globs. Install your t
 ### Use the SDK
 
 ```bash
-npm install @kelavathbalajinaik/repocontract@0.2.1
+npm install repocontract-cli@0.2.1
 ```
 
 ```ts
 import { readFileSync } from 'node:fs';
-import { checkRepository } from '@kelavathbalajinaik/repocontract';
+import { checkRepository } from 'repocontract-cli';
 
 const rules = JSON.parse(readFileSync('./rules.json', 'utf8'));
 const result = checkRepository('/absolute/path/to/your-project', rules);
@@ -109,7 +109,7 @@ Add a server entry in an MCP client that accepts `mcpServers` configuration, rep
     "repocontract": {
       "command": "npx",
       "args": [
-        "-y", "--package", "@kelavathbalajinaik/repocontract@0.2.1", "repocontract", "serve",
+        "-y", "--package", "repocontract-cli@0.2.1", "repocontract", "serve",
         "/absolute/path/to/your-project",
         "/absolute/path/to/your-project/rules.json"
       ]

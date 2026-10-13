@@ -1,12 +1,12 @@
 # RepoContract usage guide
 
-Install the npm package with `npm install @kelavathbalajinaik/repocontract@0.2.1`. Package imports use `@kelavathbalajinaik/repocontract`; the installed CLI remains `repocontract`.
+Install the npm package with `npm install repocontract-cli@0.2.1`. Package imports use `repocontract-cli`; the installed CLI remains `repocontract`.
 
 [← README](../README.md) · [Architecture](architecture.md)
 
 Run the commands below from the repository root unless a step says otherwise.
 
-Executable dependency boundaries for TypeScript repositories. Version 0.2.1. Install with `npm install @kelavathbalajinaik/repocontract@0.2.1`.
+Executable dependency boundaries for TypeScript repositories. Version 0.2.1. Install with `npm install repocontract-cli@0.2.1`.
 
 ## Quick start and usage
 
@@ -42,7 +42,7 @@ Scopes are exact relative paths or directory prefixes, **not globs**. Use `.` fo
 ### SDK
 
 ```ts
-import { checkRepository } from '@kelavathbalajinaik/repocontract';
+import { checkRepository } from 'repocontract-cli';
 const result = checkRepository('/absolute/path/to/repo', config);
 console.log(result.complete, result.violations, result.errors);
 ```
@@ -52,13 +52,13 @@ Rules, dependency edges, and errors are returned as structured data. Each violat
 ## Install the release package
 
 ```bash
-npm install @kelavathbalajinaik/repocontract@0.2.1
-npx repocontract demo
+npm install repocontract-cli@0.2.1
+npx --package repocontract-cli@0.2.1 repocontract demo
 ```
 
 The deliberate failing demo exits with code 1.
 
-The immutable [GitHub v0.2.0 tarball](https://github.com/Balaji91221/repocontract/releases/tag/v0.2.0) has the earlier unscoped package name `repocontract`. If installing that specific old tarball, import from `'repocontract'`. The scoped imports and npm install commands in this guide apply to 0.2.1; old release assets are unchanged.
+The immutable [GitHub v0.2.0 tarball](https://github.com/Balaji91221/repocontract/releases/tag/v0.2.0) uses the earlier package name `repocontract`; imports from that specific old archive remain `repocontract`. The npm install commands in this guide select 0.2.1; old release assets are unchanged.
 
 ## Build a local tarball
 
@@ -71,7 +71,7 @@ npm pack
 npm install /absolute/path/to/generated-package.tgz
 ```
 
-The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name is `@kelavathbalajinaik/repocontract`.
+The package exports compiled JavaScript and TypeScript declarations. Node.js 22.18 or newer is required. `npm ci` uses the committed dependency lockfile. `npm run typecheck` checks the source; `npm run build` creates `dist/`. Original code is MIT licensed; dependencies retain their own licenses. The public package name is `repocontract-cli`.
 
 ## Design and current scope
 
@@ -80,7 +80,7 @@ See [FEATURE_MATRIX.md](../FEATURE_MATRIX.md) for implemented features and [IMPL
 ## MCP connection
 
 ```bash
-npx -y --package @kelavathbalajinaik/repocontract@0.2.1 repocontract serve /absolute/path/to/repository /absolute/path/to/rules.json
+npx -y --package repocontract-cli@0.2.1 repocontract serve /absolute/path/to/repository /absolute/path/to/rules.json
 ```
 
 Register this command and arguments in a compatible assistant's MCP server settings. The server exposes `get_rules({file_path})` and `check_repository({})`. Root and configuration are fixed at startup; tool arguments cannot change them. Configuration edits require a server restart. Protocol initialization is handled by the MCP SDK. The included integration test uses a real SDK client to list/call tools and reject paths outside the root. No assistant UI has been configured automatically.
